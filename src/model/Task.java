@@ -1,4 +1,4 @@
-//Стоит ли оставлять геттеры и сеттеры, если они сейчас не используются, но потенциально могут?
+package model;
 
 public class Task {
     private String name;

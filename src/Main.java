@@ -1,6 +1,7 @@
-public class Main {
+import service.Manager;
+import model.*;
 
-    //Прошу прощения, что сдал пустую работу. Случайно нажал на кнопку отправки :(
+public class Main {
 
     public static void main(String[] args) {
 

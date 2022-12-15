@@ -1,3 +1,6 @@
+package service;
+
+import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -100,7 +103,7 @@ public class Manager {
                 case DONE:
                     doneStatus++;
                     break;
-                case  IN_PROGRESS:
+                case IN_PROGRESS:
                     wipStatus++;
                     break;
             }
