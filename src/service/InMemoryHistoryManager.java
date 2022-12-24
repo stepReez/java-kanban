@@ -3,12 +3,13 @@ package service;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class InMemoryHistoryManager implements HistoryManager{
-    private ArrayList<Task> taskHistory = new ArrayList<>();
+    private LinkedList<Task> taskHistory = new LinkedList<>();
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public LinkedList<Task> getHistory() {
         return taskHistory;
     }
 
