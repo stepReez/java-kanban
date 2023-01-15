@@ -7,7 +7,7 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
-        Epic learnJava = new Epic("Пройти 4 спринт на Практикуме", "");
+        Epic learnJava = new Epic("Пройти 5 спринт на Практикуме", "");
         manager.createEpic(learnJava);
 
         manager.getEpic(0);
@@ -23,36 +23,19 @@ public class Main {
         manager.getSubtask(2);
         System.out.println(manager.getHistory());
 
-        Task washDishes = new Task("Помыть посуду", "Выполнить до вечера", TaskStatus.NEW);
-        Task workout = new Task("Сделать зарядку", "", TaskStatus.NEW);
-
-        manager.createTask(washDishes);
-        manager.createTask(workout);
-
-        manager.getTask(3);
-        manager.getTask(4);
+        manager.getEpic(0);
         System.out.println(manager.getHistory());
 
-        Epic epic = new Epic("Задача", "Креативность законилась");
+        Epic epic = new Epic("Задача", "");
         manager.createEpic(epic);
 
-        manager.getEpic(5);
+        manager.getEpic(3);
         System.out.println(manager.getHistory());
 
-        Subtask subtask = new Subtask("Подзадача", "", TaskStatus.NEW);
-        manager.createSubtask(subtask, 5);
-
-        manager.getSubtask(6);
+        manager.deleteEpic(3);
         System.out.println(manager.getHistory());
-
-        manager.printTasks();
-
-        subtask.setStatus(TaskStatus.DONE);
-        manager.updateSubtask(subtask, 6);
 
         manager.deleteEpic(0);
-        manager.deleteTask(3);
-
-        manager.printTasks();
+        System.out.println(manager.getHistory());
     }
 }

@@ -3,7 +3,6 @@ package service;
 import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class InMemoryTaskManager implements TaskManager{
 
@@ -104,6 +103,7 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void deleteTask(int id) {
         tasksHashMap.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -111,8 +111,10 @@ public class InMemoryTaskManager implements TaskManager{
         ArrayList<Integer> subtasksList = getSubtasksList(id);
         for (int subtaskId : subtasksList) {
             subtaskHashMap.remove(subtaskId);
+            historyManager.remove(subtaskId);
         }
         epicHashMap.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -123,6 +125,7 @@ public class InMemoryTaskManager implements TaskManager{
         epic.removeSubtask(id);
         epicStatusCalculation(subtask.getEpicId());
         subtaskHashMap.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -181,7 +184,7 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
 
-    public LinkedList<Task> getHistory() {
+    public ArrayList<Task> getHistory() {
         return historyManager.getHistory();
     }
 }

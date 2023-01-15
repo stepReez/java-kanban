@@ -3,11 +3,9 @@ package service;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-import model.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public interface TaskManager {
 
@@ -47,5 +45,5 @@ public interface TaskManager {
 
     public ArrayList<Integer> getSubtasksList(int epicId);
 
-    public LinkedList<Task> getHistory();
+    public ArrayList<Task> getHistory();
 }
