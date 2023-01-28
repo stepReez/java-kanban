@@ -5,11 +5,22 @@ public class Task {
     private String description;
     private int id;
     private TaskStatus status;
+    private TaskType type;
+
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type =  TaskType.TASK;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+
+    public TaskType getType() {
+        return type;
     }
 
     public String getName() {

@@ -6,6 +6,10 @@ public class Managers {
         return new InMemoryTaskManager();
     }
 
+    public static TaskManager getFileManager() {
+        return new FileBackedTasksManager();
+    }
+
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }

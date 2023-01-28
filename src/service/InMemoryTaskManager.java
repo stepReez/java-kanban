@@ -13,6 +13,10 @@ public class InMemoryTaskManager implements TaskManager{
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
 
+    public int getTaskIdCounter() {
+        return taskIdCounter;
+    }
+
     @Override
     public HashMap<Integer, Task> getTasksHashMap() {
         return tasksHashMap;

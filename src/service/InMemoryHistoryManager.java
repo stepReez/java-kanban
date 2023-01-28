@@ -2,6 +2,7 @@ package service;
 
 import model.Task;
 
+import javax.crypto.spec.PSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -46,10 +47,11 @@ public class InMemoryHistoryManager implements HistoryManager{
             final Node<T> oldTail = tail;
             final Node<T> newNode = new Node<>(oldTail, element, null);
             tail = newNode;
-            if (oldTail == null)
+            if (oldTail == null) {
                 head = newNode;
-            else
+            } else {
                 oldTail.next = newNode;
+            }
         }
 
         public void removeNode(Node<T> node) {

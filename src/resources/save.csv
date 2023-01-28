@@ -1,0 +1,8 @@
+id,type,name,status,description,epic
+0,TASK,Пройти 6 спринт на Практикуме,NEW,думаем,
+1,EPIC,Name,IN_PROGRESS,Description,
+2,SUBTASK,Subtask,DONE,Des,1
+3,SUBTASK,Subtask1,NEW,Description1,1
+4,TASK,Task,DONE,TaskDescription,
+
+1,0,2,4,
