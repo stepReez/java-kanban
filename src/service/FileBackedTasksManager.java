@@ -30,8 +30,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                 } else if (getSubtaskHashMap().containsKey(i)) {
                     fw.write(toString(getSubtaskHashMap().get(i)));
-                } else {
-                    throw new ManagerSaveException("Ошибка сохранения");
                 }
             }
 
@@ -39,7 +37,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             fw.write(historyToString(historyManager));
 
         } catch (IOException e) {
-            System.out.println(e);
+            throw new ManagerSaveException("Ошибка сохранения");
         }
     }
 
@@ -65,11 +63,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         getSubtask(id);
                     }
                 }
-            } else {
-                throw new ManagerSaveException("Файл сохранения пустой");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            throw new ManagerSaveException("Файл сохранения пустой");
         }
     }
 
