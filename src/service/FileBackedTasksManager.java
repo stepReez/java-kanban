@@ -9,6 +9,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +21,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public void save() {
         try (FileWriter fw = new FileWriter("src/resources/save.csv")) {
-            fw.write("id,type,name,status,description,epic\r\n");
+            fw.write("id,type,name,status,description,startTime,duration,endTime,epic\r\n");
 
             for(int i = 0; i < getTaskIdCounter(); i++) {
 
@@ -70,18 +73,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public String toString(Task task) {
-        return String.format("%d,%s,%s,%s,%s,%n", task.getId(), task.getType(),
-                task.getName(), task.getStatus(), task.getDescription());
+        return String.format("%d,%s,%s,%s,%s,%s,%s,%s,%n", task.getId(), task.getType(),
+                task.getName(), task.getStatus(), task.getDescription(), task.getStartTime(),
+                task.getDuration(), task.getEndTime());
     }
 
     public String toString(Epic epic) {
-        return String.format("%d,%s,%s,%s,%s,%n", epic.getId(), epic.getType(),
-                epic.getName(), epic.getStatus(), epic.getDescription());
+        return String.format("%d,%s,%s,%s,%s,%s,%s,%s,%n", epic.getId(), epic.getType(),
+                epic.getName(), epic.getStatus(), epic.getDescription(), epic.getStartTime(),
+                epic.getDuration(), epic.getEndTime());
     }
 
     public String toString(Subtask subtask) {
-        return String.format("%d,%s,%s,%s,%s,%d%n", subtask.getId(), subtask.getType(),
-                subtask.getName(), subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
+        return String.format("%d,%s,%s,%s,%s,%s,%s,%s,%d%n", subtask.getId(), subtask.getType(),
+                subtask.getName(), subtask.getStatus(), subtask.getDescription(), subtask.getStartTime(),
+                subtask.getDuration(), subtask.getEndTime(), subtask.getEpicId());
     }
 
     private void fromString(String value) {
@@ -90,6 +96,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String name = csvTask[2];
         String description = csvTask[4];
         TaskStatus taskStatus = null;
+        LocalDateTime startTime = LocalDateTime.parse(csvTask[5]);
+        Duration duration = Duration.parse(csvTask[6]);
 
         switch (csvTask[3]) {
             case "NEW" :
@@ -105,13 +113,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         switch (csvTask[1]) {
             case "TASK" :
-                createTask(new Task(name, description, taskStatus));
+                createTask(new Task(name, description, taskStatus, startTime, duration));
                 break;
             case "EPIC" :
-                createEpic(new Epic(name, description));
+                createEpic(new Epic(name, description, startTime));
                 break;
             case "SUBTASK" :
-                createSubtask(new Subtask(name, description, taskStatus), Integer.parseInt(csvTask[5]));
+                createSubtask(new Subtask(name, description, taskStatus, startTime, duration),
+                        Integer.parseInt(csvTask[8]));
                 break;
 
         }
@@ -120,6 +129,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public static String historyToString(HistoryManager manager) {
         ArrayList<Task> history = manager.getHistory();
         StringBuilder sb = new StringBuilder("");
+        sb.append(",");
         for (Task task : history) {
             sb.append(task.getId());
             sb.append(",");
@@ -131,7 +141,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         List<Integer> history = new ArrayList<>();
         String[] historyId = value.split(",");
         for (String id : historyId) {
-            history.add(Integer.parseInt(id));
+            if(!id.isBlank()) {
+                history.add(Integer.parseInt(id));
+            }
         }
         return history;
     }

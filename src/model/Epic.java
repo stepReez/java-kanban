@@ -1,14 +1,17 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task{
 
-   List<Integer> subtasks;
+   private List<Integer> subtasks;
 
-    public Epic(String name, String description) {
-        super(name, description, TaskStatus.NEW);
+    public Epic(String name, String description, LocalDateTime localDateTime) {
+        super(name, description, TaskStatus.NEW, localDateTime, Duration.ofHours(0));
         subtasks = new ArrayList<>();
         this.setType(TaskType.EPIC);
     }
@@ -32,11 +35,15 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
         return "Epic{" + "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", id='" + getId() + '\'' +
                 ", status='" + getStatus() + "'"
-                + ", subtasks='" + subtasks + "'";
+                + ", subtasks='" + subtasks + "'" +
+                ", startTime='" + getStartTime().format(formatter) + '\'' +
+                ", duration='" + getDuration().getSeconds() / 3600 + " hours" + '\'' +
+                ", endTime='" + getEndTime().format(formatter) + '\'' + "}";
     }
 
 }

@@ -4,8 +4,10 @@ import model.Epic;
 import model.Subtask;
 import model.Task;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -46,5 +48,9 @@ public interface TaskManager {
     public ArrayList<Integer> getSubtasksList(int epicId);
 
     public ArrayList<Task> getHistory();
+
+    public TreeSet<Task> getPrioritizedTasks();
+
+    public void addPrioritizedTasks(Task task) throws IllegalArgumentException;
 
 }
