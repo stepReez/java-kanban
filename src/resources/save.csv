@@ -1,6 +1,4 @@
 id,type,name,status,description,startTime,duration,endTime,epic
-0,TASK,Пройти 6 спринт на Практикуме,NEW,думаем,2023-02-10T12:00,PT3H,2023-02-10T15:00,
-1,EPIC,Name,NEW,Description,2022-02-10T18:00,PT3H,2022-02-10T21:00,
-2,SUBTASK,Subtask1,NEW,Description1,2023-02-10T15:00,PT3H,2023-02-10T18:00,1
+0,EPIC,Epic,NEW,Des,2023-02-10T12:00,PT0S,2023-02-10T12:00,
 
-,1,0,2,
+,0,

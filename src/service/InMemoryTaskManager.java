@@ -86,7 +86,7 @@ public class InMemoryTaskManager implements TaskManager{
             task.setId(taskIdCounter);
             tasksHashMap.put(taskIdCounter, task);
             taskIdCounter++;
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -105,7 +105,7 @@ public class InMemoryTaskManager implements TaskManager{
             calculateEpicDuration(epicId);
 
             taskIdCounter++;
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             System.out.println(e.getMessage());
         }
 
@@ -119,7 +119,7 @@ public class InMemoryTaskManager implements TaskManager{
             epicHashMap.put(taskIdCounter, epic);
 
             taskIdCounter++;
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             System.out.println(e.getMessage());
         }
 
@@ -132,7 +132,7 @@ public class InMemoryTaskManager implements TaskManager{
             addPrioritizedTasks(task);
             task.setId(id);
             tasksHashMap.put(id, task);
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             addPrioritizedTasks(tasksHashMap.get(id));
             System.out.println(e.getMessage());
         }
@@ -148,7 +148,7 @@ public class InMemoryTaskManager implements TaskManager{
             subtaskHashMap.put(id, subtask);
             epicStatusCalculation(subtask.getEpicId());
             calculateEpicDuration(subtask.getEpicId());
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             System.out.println(e.getMessage());
             addPrioritizedTasks(subtaskHashMap.get(id));
         }
@@ -162,7 +162,7 @@ public class InMemoryTaskManager implements TaskManager{
             addPrioritizedTasks(epic);
             epic.setId(id);
             epicHashMap.put(id, epic);
-        } catch (IllegalArgumentException e) {
+        } catch (TimeIntersectionsException e) {
             System.out.println(e.getMessage());
             addPrioritizedTasks(epicHashMap.get(id));
         }
@@ -260,14 +260,14 @@ public class InMemoryTaskManager implements TaskManager{
         epic.setEndTime(epic.getStartTime().plus(duration));
     }
 
-    public void addPrioritizedTasks(Task task) throws IllegalArgumentException {
+    public void addPrioritizedTasks(Task task) throws TimeIntersectionsException {
         for (Task taskTime : prioritizedTasks) {
             if ((taskTime.getStartTime().isBefore(task.getStartTime()) &&
                     taskTime.getEndTime().isAfter(task.getStartTime())) ||
                     (taskTime.getStartTime().isBefore(task.getEndTime()) &&
                             taskTime.getEndTime().isAfter(task.getEndTime()))) {
 
-                throw new IllegalArgumentException("Время выполнения задач не может пересекаться");
+                throw new TimeIntersectionsException("Время выполнения задач не может пересекаться");
             }
         }
         prioritizedTasks.add(task);

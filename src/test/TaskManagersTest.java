@@ -215,8 +215,8 @@ class TaskManagersTest {
         Task taskIntersections = new Task("Test Task", "Test description", TaskStatus.NEW,
                 LocalDateTime.of(2023, 2, 10, 13, 0), Duration.ofHours(3));
 
-        IllegalArgumentException ex = assertThrows(
-                IllegalArgumentException.class,
+        TimeIntersectionsException ex = assertThrows(
+                TimeIntersectionsException.class,
                 () -> taskManager.addPrioritizedTasks(taskIntersections)
         );
 
