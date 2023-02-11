@@ -51,6 +51,6 @@ public interface TaskManager {
 
     public TreeSet<Task> getPrioritizedTasks();
 
-    public void addPrioritizedTasks(Task task) throws IllegalArgumentException;
+    public void addPrioritizedTasks(Task task) throws TimeIntersectionsException;
 
 }
