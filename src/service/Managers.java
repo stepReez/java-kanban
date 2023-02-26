@@ -1,12 +1,15 @@
 package service;
 
+import service.server.HttpTaskManager;
+import service.server.HttpTaskServer;
+
 public class Managers {
 
-    public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+    public static HttpTaskManager getDefault(String url) {
+        return new HttpTaskManager(url);
     }
 
-    public static TaskManager getFileManager() {
+    public static FileBackedTasksManager getFileManager() {
         return new FileBackedTasksManager();
     }
 

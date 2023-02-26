@@ -1,10 +1,13 @@
 package test;
 
 import model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import service.*;
 import org.junit.jupiter.api.Test;
+import service.server.HttpTaskManager;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,22 +16,28 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagersTest {
-    TaskManager taskManager;
+    HttpTaskManager taskManager;
     Task task;
     Epic epic;
     Subtask subtask;
 
     @BeforeEach
-    void beforeEach() {
-        taskManager = Managers.getDefault();
+    void beforeEach() throws IOException {
+        taskManager = Managers.getDefault("http://localhost:8080/");
         task = new Task("Test Task", "Test description", TaskStatus.NEW,
                 LocalDateTime.of(2023, 2, 10, 12, 0), Duration.ofHours(3));
 
         epic = new Epic("Test Epic", "Test description",
                 LocalDateTime.of(2023, 2, 11, 12, 0));
 
-        subtask = new Subtask("Test Subtask", "Test description", TaskStatus.NEW,
+        subtask = new Subtask(0, "Test Subtask", "Test description", TaskStatus.NEW,
                 LocalDateTime.of(2023, 2, 12, 12, 0), Duration.ofHours(3));
+    }
+
+    @AfterEach
+    void afterEach() {
+        taskManager.clearTasks();
+        taskManager.stop();
     }
 
 
@@ -68,7 +77,7 @@ class TaskManagersTest {
     @Test
     void createSubtaskTest() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask, 0);
+        taskManager.createSubtask(subtask);
 
         final Subtask savedSubtask = taskManager.getSubtask(1);
 
@@ -85,7 +94,7 @@ class TaskManagersTest {
     @Test
     void checkSubtaskEpicId() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask, 0);
+        taskManager.createSubtask(subtask);
 
         assertEquals(0, taskManager.getSubtask(1).getEpicId(), "У Subtask отсутствует EpicId");
     }
@@ -102,7 +111,7 @@ class TaskManagersTest {
     @Test
     void clearTasksTest() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask, 0);
+        taskManager.createSubtask(subtask);
         taskManager.createTask(task);
 
         taskManager.clearTasks();
@@ -153,8 +162,8 @@ class TaskManagersTest {
     @Test
     void updateSubtaskTest() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask, 0);
-        Subtask updateSubtask = new Subtask("Updated Subtask", "Updated Description", TaskStatus.DONE,
+        taskManager.createSubtask(subtask);
+        Subtask updateSubtask = new Subtask(0, "Updated Subtask", "Updated Description", TaskStatus.DONE,
                 LocalDateTime.of(2023, 2, 15, 12, 0), Duration.ofHours(3));
         taskManager.updateSubtask(updateSubtask, 1);
 
@@ -174,13 +183,13 @@ class TaskManagersTest {
     void deleteEpicTest() {
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask("Subtask NEW", "NEW", TaskStatus.NEW,
+        Subtask subtask1 = new Subtask(0, "Subtask NEW", "NEW", TaskStatus.NEW,
                 LocalDateTime.of(2023, 2, 17, 12, 0), Duration.ofHours(3));
-        taskManager.createSubtask(subtask1, 0);
+        taskManager.createSubtask(subtask1);
 
-        Subtask subtask2 = new Subtask("Subtask DONE", "DONE", TaskStatus.DONE,
+        Subtask subtask2 = new Subtask(0, "Subtask DONE", "DONE", TaskStatus.DONE,
                 LocalDateTime.of(2023, 2, 18, 12, 0), Duration.ofHours(3));
-        taskManager.createSubtask(subtask2, 0);
+        taskManager.createSubtask(subtask2);
 
         taskManager.deleteEpic(0);
         assertEquals(0, taskManager.getEpicHashMap().size(), "Epic не удаляется");
@@ -190,7 +199,7 @@ class TaskManagersTest {
     @Test
     void deleteSubtaskTest() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask, 0);
+        taskManager.createSubtask(subtask);
         taskManager.deleteSubtask(1);
         assertEquals(0, taskManager.getSubtaskHashMap().size(), "Subtask не удаляется");
     }

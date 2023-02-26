@@ -3,16 +3,17 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Task {
-    private String name;
-    private String description;
-    private int id;
-    private TaskStatus status;
-    private TaskType type;
-    private LocalDateTime startTime;
-    private Duration duration;
-    private LocalDateTime endTime;
+    protected String name;
+    protected String description;
+    protected int id;
+    protected TaskStatus status;
+    protected TaskType type;
+    protected LocalDateTime startTime;
+    protected Duration duration;
+    protected LocalDateTime endTime;
 
 
     public Task(String name, String description, TaskStatus status,
@@ -88,6 +89,21 @@ public class Task {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) &&
+                status == task.status && type == task.type && Objects.equals(startTime, task.startTime) &&
+                Objects.equals(duration, task.duration) && Objects.equals(endTime, task.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, id, status, type, startTime, duration, endTime);
     }
 
     @Override

@@ -4,7 +4,6 @@ import model.Epic;
 import model.Subtask;
 import model.Task;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -27,7 +26,7 @@ public interface TaskManager {
 
     public void createTask(Task task);
 
-    public void createSubtask(Subtask subtask, int epicId);
+    public void createSubtask(Subtask subtask);
 
     public void createEpic(Epic epic);
 

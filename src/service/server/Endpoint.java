@@ -1,0 +1,23 @@
+package service.server;
+
+public enum Endpoint {
+    GET_ALL_TASK,
+    GET_ALL_SUBTASK,
+    GET_ALL_EPIC,
+    DELETE_ALL,
+    GET_TASK_BY_ID,
+    GET_EPIC_BY_ID,
+    GET_SUBTASK_BY_ID,
+    CREATE_TASK,
+    CREATE_SUBTASK,
+    CREATE_EPIC,
+    UPDATE_TASK,
+    UPDATE_SUBTASK,
+    DELETE_TASK,
+    DELETE_EPIC,
+    DELETE_SUBTASK,
+    GET_SUBTASK_BY_EPIC,
+    GET_HISTORY,
+    GET_PRIORITIZED_TASK,
+    UNKNOWN
+}

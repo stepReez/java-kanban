@@ -27,7 +27,7 @@ class InMemoryHistoryManagerTest {
                 LocalDateTime.of(2023, 2, 10, 12, 0), Duration.ofHours(3));
         epic = new Epic("Epic", "Description",
                 LocalDateTime.of(2023, 2, 11, 12, 0));
-        subtask = new Subtask("Subtask", "Description", TaskStatus.NEW,
+        subtask = new Subtask(1, "Subtask", "Description", TaskStatus.NEW,
                 LocalDateTime.of(2023, 2, 12, 12, 0), Duration.ofHours(3));
     }
 

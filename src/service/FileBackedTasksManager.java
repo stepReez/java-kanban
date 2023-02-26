@@ -119,8 +119,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 createEpic(new Epic(name, description, startTime));
                 break;
             case "SUBTASK" :
-                createSubtask(new Subtask(name, description, taskStatus, startTime, duration),
-                        Integer.parseInt(csvTask[8]));
+                createSubtask(new Subtask(Integer.parseInt(csvTask[8]), name, description, taskStatus, startTime, duration));
                 break;
 
         }
@@ -157,8 +156,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createSubtask(Subtask subtask, int epicId) {
-        super.createSubtask(subtask, epicId);
+    public void createSubtask(Subtask subtask) {
+        super.createSubtask(subtask);
         save();
     }
 

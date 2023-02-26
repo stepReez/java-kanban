@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager{
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    public HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int taskIdCounter = 0;
     private HashMap<Integer, Task> tasksHashMap = new HashMap<>();
@@ -92,8 +92,9 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public void createSubtask(Subtask subtask, int epicId) {
+    public void createSubtask(Subtask subtask) {
         try {
+            int epicId = subtask.getEpicId();
             addPrioritizedTasks(subtask);
             subtask.setId(taskIdCounter);
             subtask.setEpicId(epicId);
