@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +124,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
+    /*
+    Метод преобразует историю в строку из ID задач
+     */
     public static String historyToString(HistoryManager manager) {
         ArrayList<Task> history = manager.getHistory();
         StringBuilder sb = new StringBuilder("");

@@ -1,17 +1,13 @@
 package service.server;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import model.Task;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.security.Key;
 
 public class KVTaskClient {
     HttpRequest request;
@@ -50,14 +46,13 @@ public class KVTaskClient {
         client.send(request, handler);
     }
 
-    public String load(String key) {
+    public String load(String key) throws IOException, InterruptedException {
         String load = url + "load/" + key + "?API_TOKEN=" + token;
         request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(load))
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-        try {
             HttpResponse<String> response = client.send(request, handler);
             if (response.statusCode() == 200) {
                 return response.body();
@@ -65,10 +60,5 @@ public class KVTaskClient {
                 System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
-                    "Проверьте, пожалуйста, адрес и повторите попытку.");
-            return null;
-        }
     }
 }

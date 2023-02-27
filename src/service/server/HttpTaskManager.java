@@ -115,6 +115,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
         return subtask;
     }
 
+    /*
+    Метод сохраняет задачи по ключам 'Task', 'Epic', 'Subtask'
+     */
     public void save(String task, String id) {
         try {
             kvTaskClient.put(id, task);
@@ -127,6 +130,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
+    /*
+    Метод сохраняет историю просмотра задач в виде списка ID задач по ключу "history"
+     */
     private void saveHistory() {
         try {
             kvTaskClient.put("history", gson.toJson(historyToString(httpTaskServer.fm.historyManager)));
@@ -135,43 +141,52 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
+    /*
+    Метод считывает все задачи и историю с сервера и записывает их в память
+     */
     @Override
     public void readSave() {
-        String[] keys = kvTaskClient.load("keys").split(",");
-        for (String key : keys) {
-            String[] keyType = key.split("=");
-            String jsonSave = kvTaskClient.load(key);
-            switch (keyType[0]) {
-                case "Task":
-                    createTask(gson.fromJson(jsonSave, Task.class));
-                    break;
-                case "Epic":
-                    createEpic(gson.fromJson(jsonSave, Epic.class));
-                    break;
-                case "Subtask":
-                    Subtask subtask = gson.fromJson(jsonSave, Subtask.class);
-                    createSubtask(subtask);
-                    break;
-            }
-        }
-
-        String[] historySave = kvTaskClient.load("history").split(",");
-        for (String history : historySave) {
-            int id;
-            try {
-                id = Integer.parseInt(history);
-            } catch (NumberFormatException e) {
-                id = -1;
+        try {
+            String[] keys = kvTaskClient.load("keys").split(",");
+            for (String key : keys) {
+                String[] keyType = key.split("=");
+                String jsonSave = kvTaskClient.load(key);
+                switch (keyType[0]) {
+                    case "Task":
+                        createTask(gson.fromJson(jsonSave, Task.class));
+                        break;
+                    case "Epic":
+                        createEpic(gson.fromJson(jsonSave, Epic.class));
+                        break;
+                    case "Subtask":
+                        Subtask subtask = gson.fromJson(jsonSave, Subtask.class);
+                        createSubtask(subtask);
+                        break;
+                }
             }
 
-            if (getTasksHashMap().containsKey(id)) {
-                httpTaskServer.fm.historyManager.addTask(getTasksHashMap().get(id));
-            } else if (getEpicHashMap().containsKey(id)) {
-                httpTaskServer.fm.historyManager.addTask(getEpicHashMap().get(id));
-            } else if (getSubtaskHashMap().containsKey(id)) {
-                httpTaskServer.fm.historyManager.addTask(getSubtaskHashMap().get(id));
+            String[] historySave = kvTaskClient.load("history").split(",");
+            for (String history : historySave) {
+                int id;
+                try {
+                    id = Integer.parseInt(history);
+                } catch (NumberFormatException e) {
+                    id = -1;
+                }
+
+                if (getTasksHashMap().containsKey(id)) {
+                    httpTaskServer.fm.historyManager.addTask(getTasksHashMap().get(id));
+                } else if (getEpicHashMap().containsKey(id)) {
+                    httpTaskServer.fm.historyManager.addTask(getEpicHashMap().get(id));
+                } else if (getSubtaskHashMap().containsKey(id)) {
+                    httpTaskServer.fm.historyManager.addTask(getSubtaskHashMap().get(id));
+                }
             }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
+                    "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
+
     }
 
     public ArrayList<Task> getHistory() {
